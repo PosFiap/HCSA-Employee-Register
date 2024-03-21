@@ -1,6 +1,5 @@
 package br.com.hackaton.company.employeeregister.utils;
 
-import br.com.hackaton.company.employeeregister.enums.TypeRegister;
 import br.com.hackaton.company.employeeregister.models.EmployeeRegisterModel;
 
 import java.math.BigDecimal;
@@ -20,7 +19,6 @@ public class TestUtils {
                 .id(999L)
                 .registracionCode("M98765")
                 .timeRegister(calendar.getTime())
-                .typeRegister(TypeRegister.ENTRY)
                 .build();
     }
 
@@ -34,7 +32,6 @@ public class TestUtils {
                 .id(999L)
                 .registracionCode("M98765")
                 .timeRegister(calendar.getTime())
-                .typeRegister(TypeRegister.LUNCH)
                 .build();
     }
 
@@ -48,7 +45,6 @@ public class TestUtils {
                 .id(999L)
                 .registracionCode("M98765")
                 .timeRegister(calendar.getTime())
-                .typeRegister(TypeRegister.LUNCH_RETURN)
                 .build();
     }
 
@@ -62,7 +58,6 @@ public class TestUtils {
                 .id(999L)
                 .registracionCode("M98765")
                 .timeRegister(calendar.getTime())
-                .typeRegister(TypeRegister.EXIT)
                 .build();
     }
 

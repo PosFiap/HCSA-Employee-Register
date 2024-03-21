@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -120,6 +123,30 @@ class EmployeeRegisterRepositoryTest {
 
     }
 
+    @Nested
+    class findEmployee {
+
+        @Test
+        void findEmployeeByCodeTest() {
+
+            EmployeeRegisterModel employeeRegister = TestUtils.employeeRegisterEntry();
+            EmployeeRegisterModel employeeRegister2 = TestUtils.employeeRegisterLunch();
+
+            List<EmployeeRegisterModel> list = new ArrayList<>();
+
+            list.add(employeeRegister);
+            list.add(employeeRegister2);
+
+            when(employeeRegisterRepository.findByRegistracionCode(any(String.class))).thenReturn(list);
+
+            var employeeList = employeeRegisterRepository
+                    .findByRegistracionCode(employeeRegister.getRegistracionCode());
+
+            Assertions.assertThat(employeeList).isNotNull().isEqualTo(list);
+
+        }
+
+    }
 
 
 }

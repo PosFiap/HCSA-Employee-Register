@@ -1,6 +1,5 @@
 package br.com.hackaton.company.employeeregister.models;
 
-import br.com.hackaton.company.employeeregister.enums.TypeRegister;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +23,6 @@ public class EmployeeRegisterModel {
 
     private String registracionCode;
     private Date timeRegister;
-    private TypeRegister typeRegister;
+
 
 }
