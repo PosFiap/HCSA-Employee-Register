@@ -137,12 +137,15 @@ class EmployeeRegisterRepositoryTest {
             list.add(employeeRegister);
             list.add(employeeRegister2);
 
-            when(employeeRegisterRepository.findByRegistracionCode(any(String.class))).thenReturn(list);
+            when(employeeRegisterRepository.findByRegistracionCode(any(String.class), any(Integer.class))).thenReturn(list);
 
             var employeeList = employeeRegisterRepository
-                    .findByRegistracionCode(employeeRegister.getRegistracionCode());
+                    .findByRegistracionCode(employeeRegister.getRegistracionCode(), 3);
 
             Assertions.assertThat(employeeList).isNotNull().isEqualTo(list);
+
+            verify(employeeRegisterRepository, times(1))
+                    .findByRegistracionCode(any(String.class), any(Integer.class));
 
         }
 

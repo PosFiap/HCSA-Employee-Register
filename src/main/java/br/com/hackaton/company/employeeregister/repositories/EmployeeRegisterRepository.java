@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface EmployeeRegisterRepository extends JpaRepository<EmployeeRegisterModel, Long> {
 
-    @Query("SELECT e FROM EmployeeRegisterModel e WHERE e.registracionCode = :registracionCode")
-    List<EmployeeRegisterModel> findByRegistracionCode(String registracionCode);
+    @Query("SELECT e FROM EmployeeRegisterModel e WHERE e.registracionCode = :registracionCode AND MONTH(e.timeRegister) = :previousMonth")
+    List<EmployeeRegisterModel> findByRegistracionCode(String registracionCode, int previousMonth);
 
 }
