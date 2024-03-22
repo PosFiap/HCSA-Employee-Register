@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,6 +29,9 @@ class EmployeeRegisterServiceTest {
     @Mock
     EmployeeRegisterRepository employeeRegisterRepository;
 
+    @Mock
+    EmailService emailService;
+
     private EmployeeRegisterService service;
 
     AutoCloseable mock;
@@ -35,7 +39,7 @@ class EmployeeRegisterServiceTest {
     @BeforeEach
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
-        service = new EmployeeRegisterService(employeeRegisterRepository);
+        service = new EmployeeRegisterService(employeeRegisterRepository, emailService);
     }
 
     @AfterEach
@@ -73,6 +77,34 @@ class EmployeeRegisterServiceTest {
 
 
         }
+
+    }
+
+    @Nested
+    class sendEmailTests {
+
+        @Test
+        void testSendEmail() {
+            String receiver = "test@example.com";
+            EmployeeRegisterModel employeeRegister = TestUtils.employeeRegisterEntry();
+            EmployeeRegisterModel employeeRegister2 = TestUtils.employeeRegisterLunch();
+            EmployeeRegisterModel employeeRegister3 = TestUtils.employeeRegisterLunchreturn();
+
+            List<EmployeeRegisterModel> list = new ArrayList<>();
+
+            list.add(employeeRegister);
+            list.add(employeeRegister2);
+            list.add(employeeRegister3);
+
+            when(service.findByRegistracionCode(employeeRegister.getRegistracionCode())).thenReturn(list);
+
+
+            service.sendEmail(employeeRegister.getRegistracionCode(), receiver);
+
+            verify(emailService, times(1)).sendMail(eq(receiver), anyString(), anyString());
+        }
+
+
 
     }
 

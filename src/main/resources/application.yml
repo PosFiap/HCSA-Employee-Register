@@ -20,3 +20,15 @@ spring:
   sql:
     init:
       mode: always
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hcompanysafiap@gmail.com
+    password: wrre xukr egsx npdu
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
