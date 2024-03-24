@@ -129,7 +129,6 @@ class EmployeeRegisterServiceTest {
 
             when(service.findByRegistracionCode(employeeRegister.getRegistracionCode())).thenReturn(list);
 
-
             service.sendEmail(employeeRegister.getRegistracionCode(), receiver);
 
             verify(emailService, times(1)).sendMail(eq(receiver), anyString(), anyString());
