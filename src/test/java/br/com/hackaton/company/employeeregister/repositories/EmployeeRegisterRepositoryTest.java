@@ -149,6 +149,37 @@ class EmployeeRegisterRepositoryTest {
 
         }
 
+        @Test
+        void findEmployeeByDatesTest() {
+
+            EmployeeRegisterModel employeeRegister = TestUtils.employeeRegisterEntry();
+            EmployeeRegisterModel employeeRegister2 = TestUtils.employeeRegisterLunch();
+
+            List<EmployeeRegisterModel> list = new ArrayList<>();
+
+            list.add(employeeRegister);
+            list.add(employeeRegister2);
+
+            when(employeeRegisterRepository.findByRegistracionCodeAndDate(
+                    any(String.class),
+                    any(Integer.class),
+                    any(Integer.class),
+                    any(Integer.class))).thenReturn(list);
+
+            var employeeList = employeeRegisterRepository
+                    .findByRegistracionCodeAndDate(employeeRegister.getRegistracionCode(), 2024, 3, 2);
+
+            Assertions.assertThat(employeeList).isNotNull().isEqualTo(list);
+
+            verify(employeeRegisterRepository, times(1))
+                    .findByRegistracionCodeAndDate(
+                            any(String.class),
+                            any(Integer.class),
+                            any(Integer.class),
+                            any(Integer.class));
+
+        }
+
     }
 
 
