@@ -156,7 +156,7 @@ resource "aws_launch_template" "hack_ec2_launch_templ" {
   network_interfaces {
     associate_public_ip_address = false
     subnet_id                   = aws_subnet.hack_subnet_3.id
-    security_groups             = [aws_security_group.hack_sg_for_ec2.id, aws_security_group.hack_ssh.id]
+    security_groups             = [aws_security_group.hack_sg_for_ec2.id]
   }
 
   provisioner "remote-exec" {
