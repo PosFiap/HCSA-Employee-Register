@@ -9,7 +9,7 @@ terraform {
 
 # Config Provider
 provider "aws" {
-  region = "us-east-1"
+  region     = "us-east-1"
 }
 
 # VPC
@@ -76,7 +76,7 @@ resource "aws_route_table_association" "hack_rota2" {
 # Elastic Ip
 resource "aws_eip" "hack_eip" {
   depends_on = [aws_internet_gateway.hack_gw]
-  domain = "vpc"
+  domain     = "vpc"
   tags = {
     Name = "hack_EIP_NAT"
   }
@@ -135,18 +135,6 @@ resource "aws_lb_listener" "hack_front_end" {
   }
 }
 
-# Database Postgresql
-# resource "aws_db_instance" "hack_db_postgrsql" {
-#   allocated_storage = 5
-#   db_name = "hack"
-#   engine = "postgres"
-#   engine_version = "16.1"
-#   instance_class = "db.t3.micro"
-#   vpc_security_group_ids = [aws_security_group.hack_group_db.id]
-#   username = "hack"
-#   password = "123456789010"
-# }
-
 # EC2
 resource "aws_launch_template" "hack_ec2_launch_templ" {
   name_prefix   = "hack_ec2_launch_templ"
@@ -155,30 +143,10 @@ resource "aws_launch_template" "hack_ec2_launch_templ" {
 
   network_interfaces {
     associate_public_ip_address = false
-    subnet_id                   = aws_subnet.hack_subnet_3.id
-    security_groups             = [aws_security_group.hack_sg_for_ec2.id]
+    subnet_id = aws_subnet.hack_subnet_3.id
+    security_groups = [aws_security_group.hack_sg_for_ec2.id]
   }
 
-  provisioner "remote-exec" {
-      inline = [
-          "sudo apt-get -y update",
-          "sudo apt-get -y install openjdk-8-jre-headless"
-      ]
-  }
-
-  # upload jar file
-  provisioner "file" {
-    source      = "target/docker-exercise-backend-0.0.1.jar app.jar"
-    destination = "/home/ubuntu/app.jar"
-  }
-
-  # run jar
-  provisioner "remote-exec" {
-    inline = [
-      "java -jar app.jar",
-    ]
-  }
-  
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -214,7 +182,7 @@ resource "aws_autoscaling_group" "hack_asg" {
 resource "aws_security_group" "hack_sg_for_elb" {
   name   = "hack-sg_for_elb"
   vpc_id = aws_vpc.hack_main.id
-  
+
   ingress {
     description      = "Allow http request from anywhere"
     protocol         = "tcp"
@@ -223,7 +191,7 @@ resource "aws_security_group" "hack_sg_for_elb" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-  
+
   ingress {
     description      = "Allow https request from anywhere"
     protocol         = "tcp"
@@ -259,20 +227,6 @@ resource "aws_security_group" "hack_sg_for_ec2" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# sg to rds
-resource "aws_security_group" "hack_rds" {
-  vpc_id      = aws_vpc.hack_main.id
-  name        = "hack_sg_rds"
-  description = "Allow all postgresql"
-
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
