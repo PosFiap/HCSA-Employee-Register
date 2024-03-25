@@ -168,7 +168,7 @@ resource "aws_launch_template" "hack_ec2_launch_templ" {
 
   # upload jar file
   provisioner "file" {
-    source      = "/path/file/exec.jar"
+    source      = "target/docker-exercise-backend-0.0.1.jar app.jar"
     destination = "/home/ubuntu/app.jar"
   }
 
