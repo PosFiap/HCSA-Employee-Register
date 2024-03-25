@@ -20,7 +20,7 @@ jobs:
         distribution: 'temurin'
         architecture: x64
     - name: Set up JDK 11 for x64
-      run: mvn package && mvn spring-boot:run
+      run: mvn package
 
     ### Terraform
     - uses: hashicorp/setup-terraform@v3
