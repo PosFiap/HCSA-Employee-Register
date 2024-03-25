@@ -165,6 +165,19 @@ resource "aws_launch_template" "hack_ec2_launch_templ" {
           "sudo apt-get -y install openjdk-8-jre-headless"
       ]
   }
+
+  # upload jar file
+  provisioner "file" {
+    source      = "/path/file/exec.jar"
+    destination = "/home/ubuntu/app.jar"
+  }
+
+  # run jar
+  provisioner "remote-exec" {
+    inline = [
+      "java -jar app.jar",
+    ]
+  }
   
   tag_specifications {
     resource_type = "instance"
