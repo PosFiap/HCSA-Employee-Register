@@ -1,0 +1,52 @@
+name: Deploy main branch
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        architecture: x64
+    - name: Set up JDK 11 for x64
+      run: mvn package
+
+    ### Terraform
+    - uses: hashicorp/setup-terraform@v3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt
+      continue-on-error: true
+    
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
+
+    - name: Terraform apply
+      id: apply
+      run: terraform apply
+      continue-on-error: true
